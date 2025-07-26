@@ -1,0 +1,6 @@
+maximize=true
+theme=ayu
+font-size=18
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig 

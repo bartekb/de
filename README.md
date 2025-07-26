@@ -9,7 +9,7 @@ Minimal Hyprland setup with Catppuccin Mocha theme. No animations, clean and fun
 - **Fuzzel** - Application launcher
 - **Dunst** - Notifications
 - **Hypridle/Hyprlock** - Power management and screen lock
-- **Ghostty** - Terminal
+- **Ghostty** - Terminal with Ayu theme
 - **Google Chrome, VSCode, Cursor, Teams, WebStorm** - Wayland-optimized
 - **Steam** - Gaming platform with Vulkan support
 - **Fish Shell** - Pre-configured with aliases
@@ -72,6 +72,8 @@ config/
 ├── fish/
 │   └── config.fish
 ├── swappy/
+│   └── config
+├── ghostty/
 │   └── config
 └── applications/
     └── *-wayland.desktop

@@ -130,7 +130,7 @@ sudo systemctl enable NetworkManager
 sudo systemctl start NetworkManager
 
 print_status "Creating directories..."
-mkdir -p ~/.config/{hypr,waybar,fuzzel,dunst,fish,swappy}
+mkdir -p ~/.config/{hypr,waybar,fuzzel,dunst,fish,swappy,ghostty}
 mkdir -p ~/.config/hypr/wallpapers
 mkdir -p ~/.local/bin
 
@@ -187,6 +187,13 @@ if [ -d "./config/swappy" ]; then
     print_success "Swappy config copied"
 else
     print_warning "Swappy config not found"
+fi
+
+if [ -d "./config/ghostty" ]; then
+    cp -r ./config/ghostty/* ~/.config/ghostty/
+    print_success "Ghostty config copied"
+else
+    print_warning "Ghostty config not found"
 fi
 
 print_status "Setting up Wayland apps..."
