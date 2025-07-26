@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "Creating directories..."
+
+mkdir -p ~/Pictures/Screenshots
+mkdir -p ~/.local/bin
+mkdir -p ~/.config/{hypr,waybar,fuzzel,dunst}
+
+echo "Directories created!"
+echo "Screenshots: ~/Pictures/Screenshots" 

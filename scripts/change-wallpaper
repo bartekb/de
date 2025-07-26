@@ -1,0 +1,104 @@
+#!/bin/bash
+
+WALLPAPER_DIR="$HOME/.config/hypr/wallpapers"
+HYPRPAPER_CONFIG="$HOME/.config/hypr/hyprpaper.conf"
+
+print_status() {
+    echo -e "\033[0;34m[INFO]\033[0m $1"
+}
+
+print_success() {
+    echo -e "\033[0;32m[SUCCESS]\033[0m $1"
+}
+
+print_error() {
+    echo -e "\033[0;31m[ERROR]\033[0m $1"
+}
+
+print_warning() {
+    echo -e "\033[1;33m[WARNING]\033[0m $1"
+}
+
+set_wallpaper() {
+    local wallpaper_path="$1"
+    
+    if [ ! -f "$wallpaper_path" ]; then
+        print_error "File not found: $wallpaper_path"
+        return 1
+    fi
+    
+    cat > "$HYPRPAPER_CONFIG" << EOF
+preload = $wallpaper_path
+wallpaper = ,$wallpaper_path
+splash = false
+ipc = off
+EOF
+    
+    pkill hyprpaper
+    sleep 1
+    hyprpaper &
+    
+    print_success "Wallpaper set: $(basename "$wallpaper_path")"
+}
+
+list_wallpapers() {
+    print_status "Available wallpapers:"
+    if [ -d "$WALLPAPER_DIR" ]; then
+        for file in "$WALLPAPER_DIR"/*.{jpg,jpeg,png,webp}; do
+            if [ -f "$file" ]; then
+                echo "  - $(basename "$file")"
+            fi
+        done
+    else
+        print_warning "Directory not found: $WALLPAPER_DIR"
+    fi
+}
+
+set_random_wallpaper() {
+    if [ ! -d "$WALLPAPER_DIR" ]; then
+        print_error "Directory not found: $WALLPAPER_DIR"
+        return 1
+    fi
+    
+    wallpapers=($(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \)))
+    
+    if [ ${#wallpapers[@]} -eq 0 ]; then
+        print_error "No wallpapers found"
+        return 1
+    fi
+    
+    random_wallpaper=${wallpapers[$RANDOM % ${#wallpapers[@]}]}
+    set_wallpaper "$random_wallpaper"
+}
+
+case "$1" in
+    "set")
+        if [ -z "$2" ]; then
+            print_error "Usage: $0 set <wallpaper_name>"
+            exit 1
+        fi
+        wallpaper_path="$WALLPAPER_DIR/$2"
+        set_wallpaper "$wallpaper_path"
+        ;;
+    "list")
+        list_wallpapers
+        ;;
+    "random")
+        set_random_wallpaper
+        ;;
+    "path")
+        if [ -z "$2" ]; then
+            print_error "Usage: $0 path <full_path>"
+            exit 1
+        fi
+        set_wallpaper "$2"
+        ;;
+    *)
+        echo "Usage: $0 {set|list|random|path}"
+        echo "  set <name>    - Set wallpaper by name"
+        echo "  list          - List available wallpapers"
+        echo "  random        - Set random wallpaper"
+        echo "  path <path>   - Set wallpaper by full path"
+        exit 1
+        ;;
+esac 

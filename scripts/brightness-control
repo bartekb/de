@@ -1,0 +1,35 @@
+#!/bin/bash
+
+get_brightness() {
+    brightnessctl get
+}
+
+get_max_brightness() {
+    brightnessctl max
+}
+
+get_brightness_percentage() {
+    local current=$(get_brightness)
+    local max=$(get_max_brightness)
+    echo $((current * 100 / max))
+}
+
+send_notification() {
+    brightness=$(get_brightness_percentage)
+    dunstify -a "brightness-control" -u low -r 2594 -h int:value:"$brightness" "Brightness: ${brightness}%" -t 2000
+}
+
+case $1 in
+    up)
+        brightnessctl set +10%
+        send_notification
+        ;;
+    down)
+        brightnessctl set 10%-
+        send_notification
+        ;;
+    *)
+        echo "Usage: $0 {up|down}"
+        exit 1
+        ;;
+esac 

@@ -1,0 +1,27 @@
+[Desktop Entry]
+Name=Cursor (Wayland)
+Comment=The AI-first Code Editor
+GenericName=Text Editor
+Exec=cursor --enable-features=UseOzonePlatform --ozone-platform=wayland --unity-launch %F
+Icon=cursor
+Type=Application
+StartupNotify=false
+StartupWMClass=Cursor
+Categories=TextEditor;Development;IDE;
+MimeType=text/plain;inode/directory;application/x-cursor-workspace;
+Actions=new-empty-window;
+Keywords=cursor;ai;code;editor;
+
+[Desktop Action new-empty-window]
+Name=New Empty Window
+Name[de]=Neues leeres Fenster
+Name[es]=Nueva ventana vacía
+Name[fr]=Nouvelle fenêtre vide
+Name[it]=Nuova finestra vuota
+Name[ja]=新しい空のウィンドウ
+Name[ko]=새 빈 창
+Name[ru]=Новое пустое окно
+Name[zh_CN]=新建空窗口
+Name[zh_TW]=開新空視窗
+Exec=cursor --enable-features=UseOzonePlatform --ozone-platform=wayland --new-window %F
+Icon=cursor 

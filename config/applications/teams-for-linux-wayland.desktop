@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Microsoft Teams for Linux (Wayland)
+Comment=Unofficial Microsoft Teams client for Linux
+GenericName=Microsoft Teams
+Exec=teams-for-linux --enable-features=UseOzonePlatform --ozone-platform=wayland %U
+Icon=teams-for-linux
+Type=Application
+StartupNotify=true
+Categories=Network;InstantMessaging;Chat;VideoConference;
+MimeType=x-scheme-handler/msteams;
+Keywords=teams;microsoft;chat;collaboration;video;call; 

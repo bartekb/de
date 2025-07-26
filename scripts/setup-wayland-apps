@@ -1,0 +1,77 @@
+#!/bin/bash
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_DIR="$(dirname "$SCRIPT_DIR")/config"
+
+print_status() {
+    echo -e "\033[0;34m[INFO]\033[0m $1"
+}
+
+print_success() {
+    echo -e "\033[0;32m[SUCCESS]\033[0m $1"
+}
+
+print_warning() {
+    echo -e "\033[1;33m[WARNING]\033[0m $1"
+}
+
+print_status "Setting up Wayland applications..."
+
+mkdir -p ~/.local/share/applications
+
+if [ -f "$CONFIG_DIR/applications/google-chrome-wayland.desktop" ]; then
+    cp "$CONFIG_DIR/applications/google-chrome-wayland.desktop" ~/.local/share/applications/
+    print_success "Chrome config copied"
+else
+    print_warning "Chrome config not found"
+fi
+
+if [ -f "$CONFIG_DIR/applications/code-wayland.desktop" ]; then
+    cp "$CONFIG_DIR/applications/code-wayland.desktop" ~/.local/share/applications/
+    print_success "VSCode config copied"
+else
+    print_warning "VSCode config not found"
+fi
+
+if [ -f "$CONFIG_DIR/applications/cursor-wayland.desktop" ]; then
+    cp "$CONFIG_DIR/applications/cursor-wayland.desktop" ~/.local/share/applications/
+    print_success "Cursor config copied"
+else
+    print_warning "Cursor config not found"
+fi
+
+if [ -f "$CONFIG_DIR/applications/teams-for-linux-wayland.desktop" ]; then
+    cp "$CONFIG_DIR/applications/teams-for-linux-wayland.desktop" ~/.local/share/applications/
+    print_success "Teams config copied"
+else
+    print_warning "Teams config not found"
+fi
+
+if [ -f "$CONFIG_DIR/applications/webstorm-wayland.desktop" ]; then
+    cp "$CONFIG_DIR/applications/webstorm-wayland.desktop" ~/.local/share/applications/
+    print_success "WebStorm config copied"
+else
+    print_warning "WebStorm config not found"
+fi
+
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database ~/.local/share/applications
+    print_success "Desktop database updated"
+fi
+
+print_status "Configuring Fish environment..."
+
+mkdir -p ~/.config/fish
+
+if ! grep -q "ELECTRON_OZONE_PLATFORM_HINT" ~/.config/fish/config.fish 2>/dev/null; then
+    echo "" >> ~/.config/fish/config.fish
+    echo "# Wayland support" >> ~/.config/fish/config.fish
+    echo 'set -gx ELECTRON_OZONE_PLATFORM_HINT wayland' >> ~/.config/fish/config.fish
+    echo 'set -gx ELECTRON_ENABLE_WAYLAND 1' >> ~/.config/fish/config.fish
+    print_success "Wayland environment configured"
+else
+    print_success "Environment already configured"
+fi
+
+print_success "Wayland setup complete!"
+print_status "Restart applications to apply changes." 

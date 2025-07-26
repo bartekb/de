@@ -1,0 +1,31 @@
+#!/bin/bash
+
+case "$1" in
+    "area")
+        grim -g "$(slurp)" - | swappy -f -
+        ;;
+    "area-save")
+        grim -g "$(slurp)" ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png
+        notify-send "Screenshot" "Area saved"
+        ;;
+    "full")
+        grim - | swappy -f -
+        ;;
+    "full-save")
+        grim ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png
+        notify-send "Screenshot" "Full screen saved"
+        ;;
+    "window")
+        grim -g "$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')" - | swappy -f -
+        ;;
+    "window-save")
+        grim -g "$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')" ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png
+        notify-send "Screenshot" "Window saved"
+        ;;
+    *)
+        echo "Usage: $0 {area|area-save|full|full-save|window|window-save}"
+        echo "  area/full/window      - Screenshot with annotations"
+        echo "  *-save variants       - Direct save without annotations"
+        exit 1
+        ;;
+esac 
